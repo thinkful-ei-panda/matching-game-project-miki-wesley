@@ -15,7 +15,7 @@ const StartPage = (props) => {
                 <select id='themeSelect' className='theme-select'>
                     <option value='Dogs'>Dogs</option>
                     <option value='Cats'>Cats</option>
-                    <option value='Cards'>Cards</option>
+                    {/* <option value='Cards'>Cards</option> */}
                 </select>
                 <button type='submit'>Start Game</button>
             </fieldset>

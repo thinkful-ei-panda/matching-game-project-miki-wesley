@@ -3,7 +3,7 @@ import Card from './Card'
 
 const Row = (props) => {
     const cards=props.cards.map((card,i)=> 
-        <Card key={i} card={card}/>
+        <Card key={i} card={card} handleClickCard={props.handleClickCard}/>
     )
     
     return (

@@ -22,18 +22,126 @@ import Game from './Game';
 //Menu page:
 //Restart, Go to Start
 
-
-
-
 class App extends React.Component{
   state= {
-    cards: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+    cards: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    flipped: false
   }
 
   handleGameSettingsSubmit= (e) =>{
     e.preventDefault();
-    console.log('click',e.target.numberCards.value,e.target.themeSelect.value);
+    const numberCards = e.target.numberCards.value;
+    const halfNumberCards = numberCards / 2;
+    const themeSelect = e.target.themeSelect.value;
+    let URL;
+    let cards;
+
+    switch(themeSelect) {
+      case 'Dogs':
+        URL = `https://dog.ceo/api/breeds/image/random/${halfNumberCards}`;
+        fetch(URL)
+        .then(response => response.json())
+        .then(data => {
+          cards = ([...data.message, ...data.message]).map(url => {
+            return {
+              id: Math.ceil(Math.random() * 1000),
+              url: url,
+              faceUp: false,
+              matched: false
+            }
+          })
+
+          cards.sort((a,b ) => {
+            return a.id - b.id
+          })
+
+          this.setState({cards});
+        })
+        break;
+
+      case 'Cats':
+        URL = `https://api.thecatapi.com/v1/images/search?api_key=59851ea6-2867-4bf7-8dbb-815ece716b6e&limit=${halfNumberCards}`;
+        fetch(URL)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          cards = ([...data, ...data]).map(item => {
+            return {
+              id: Math.ceil(Math.random() * 1000),
+              url: item.url,
+              faceUp: false,
+              matched: false
+            }
+          })
+
+          cards.sort((a,b ) => {
+            return a.id - b.id
+          })
+
+          this.setState({cards});
+        })
+
+        break;
+      default:
+        // URL = ''
+    }
   }
+
+  handleClickCard = (e) => {
+    if (!this.state.flipped) {
+      const targetCardId = parseInt(e.target.id);
+      let newCards = this.state.cards;
+      const targetCard = newCards.find(card => card.id === targetCardId)
+
+      newCards = newCards.filter(card => {
+        return card.id !== targetCardId})
+
+      newCards.push({
+        id: targetCardId,
+        url: targetCard.url,
+        faceUp: true,
+        matched: false
+      });
+
+      newCards.sort((a, b) => {
+        return a.id - b.id
+      })
+
+      this.setState({cards: newCards, flipped: true})
+      
+    } else {
+        const targetCardId = parseInt(e.target.id);
+        let newCards = this.state.cards;
+        const targetCard = newCards.find(card => card.id === targetCardId)
+
+        newCards = newCards.filter(card => {
+          return card.id !== targetCardId})
+
+        newCards.push({
+          id: targetCardId,
+          url: targetCard.url,
+          faceUp: true,
+          matched: false
+        });
+
+        newCards.sort((a, b) => {
+          return a.id - b.id
+        })
+
+        // const matchCheck = newCards.filter(card => card.faceUp  === true)
+        // if (matchCheck[0].url === matchCheck[1].url) {
+        // }
+
+
+        this.setState({cards: newCards})
+
+    }
+
+    
+  }
+
+
+  
 
 
   render(){
@@ -43,7 +151,7 @@ class App extends React.Component{
         <main>
           {/* if(startPage) */}
           <StartPage handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>
-          <Game cards={this.state.cards}/>
+          <Game cards={this.state.cards} handleClickCard={this.handleClickCard}/>
 
 
         </main>
