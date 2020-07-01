@@ -28,6 +28,7 @@ class App extends React.Component{
     flipped: false
   }
 
+  //Handler for starting game after choosing settings
   handleGameSettingsSubmit= (e) =>{
     e.preventDefault();
     const numberCards = e.target.numberCards.value;
@@ -36,12 +37,14 @@ class App extends React.Component{
     let URL;
     let cards;
 
+    //fetch images from API corresponding to the theme selected
     switch(themeSelect) {
       case 'Dogs':
         URL = `https://dog.ceo/api/breeds/image/random/${halfNumberCards}`;
         fetch(URL)
         .then(response => response.json())
         .then(data => {
+          //map the resulting data doubled to our cards          
           cards = ([...data.message, ...data.message]).map(url => {
             return {
               id: Math.ceil(Math.random() * 1000),
@@ -51,14 +54,17 @@ class App extends React.Component{
             }
           })
 
+          //sort the cards by id in order to randomize them after the doubling
           cards.sort((a,b ) => {
             return a.id - b.id
           })
 
+          //update state with the cards
           this.setState({cards});
         })
         break;
 
+      //same methodology as with Dogs API
       case 'Cats':
         URL = `https://api.thecatapi.com/v1/images/search?api_key=59851ea6-2867-4bf7-8dbb-815ece716b6e&limit=${halfNumberCards}`;
         fetch(URL)
@@ -88,46 +94,51 @@ class App extends React.Component{
   }
 
   handleClickCard = (e) => {
+    //if no card has been flipped, flip the selected card
     if (!this.state.flipped) {
-      const targetCardId = parseInt(e.target.id);
       let newCards = this.state.cards;
-      const targetCard = newCards.find(card => card.id === targetCardId)
+      //find and remove the selected card from the list         
+      const targetCard = newCards.find(card => card.id === Number(e.target.id))
 
       newCards = newCards.filter(card => {
-        return card.id !== targetCardId})
+        return card.id !== targetCard.id})
 
+      //add that card back to the list with updated faceUp value and sort to the original order
       newCards.push({
-        id: targetCardId,
+        id: targetCard.id,
         url: targetCard.url,
         faceUp: true,
         matched: false
-      });
+      })
 
       newCards.sort((a, b) => {
         return a.id - b.id
       })
 
+      //update state with the card's flipped status, and that a card has been flipped
       this.setState({cards: newCards, flipped: true})
-      
+
+    //if a card has already been flipped, flip the selected card and check for a match      
     } else {
-        const targetCardId = parseInt(e.target.id);
+        console.log(e.target)
         let newCards = this.state.cards;
-        const targetCard = newCards.find(card => card.id === targetCardId)
+        //find and remove the selected card from the list         
+        const targetCard = newCards.find(card => card.id === Number(e.target.id))
 
         newCards = newCards.filter(card => {
-          return card.id !== targetCardId})
+          return card.id !== targetCard.id})
 
+        //add that card back to the list with updated faceUp value and sort to the original order
         newCards.push({
-          id: targetCardId,
+          id: targetCard.id,
           url: targetCard.url,
           faceUp: true,
           matched: false
-        });
+        })
 
         newCards.sort((a, b) => {
           return a.id - b.id
         })
-
         // const matchCheck = newCards.filter(card => card.faceUp  === true)
         // if (matchCheck[0].url === matchCheck[1].url) {
         // }
@@ -149,13 +160,13 @@ class App extends React.Component{
       <div className='App'>
         <Header />
         <main>
-          {/* if(startPage) */}
+          {/* if startPage */}
           <StartPage handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>
+
+          {/* if game page */}
           <Game cards={this.state.cards} handleClickCard={this.handleClickCard}/>
 
-
-        </main>
-        
+        </main>        
       </div>
     )
   }
