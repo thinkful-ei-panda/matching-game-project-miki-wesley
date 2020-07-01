@@ -144,45 +144,55 @@ class App extends React.Component{
           return a.id - b.id
         })
 
+        //update state
+        this.setState({cards: newCards})
+
+        //set an array with the 2 cards to match and check if they match with if else
         const matchCheck = newCards.filter(card => card.faceUp  === true && card.matched === false)        
         if (matchCheck[0].url === matchCheck[1].url) {   
-          console.log('match')   
-          newCards = newCards.filter (card => card.faceUp ===false || card.matched===true)    
+
+          //if they match, add the non matching cards to the newCards
+          newCards = newCards.filter (card => card.faceUp ===false || card.matched===true)  
+          
+          //set the matched values of the matched cards to true, add them to the newCards, sort
           matchCheck[0].matched=true;
           matchCheck[1].matched=true;
           newCards.push(...matchCheck);
           newCards.sort((a,b) => a.id-b.id);
 
-            this.setState({
-              cards:newCards,
-              flipped:false,
-              loading:false
-            })
-
-          
+          //update state
+          this.setState({
+            cards:newCards,
+            flipped:false,
+          })          
         } else {
-          console.log('no match')          
+
+
+          //if the flipped cards don't match set loading to true
           this.setState({loading:true})
+
+          //wait 2 seconds
           setTimeout(()=>{
+
+            //add all the non flipped and previously matched cards to newCards
             newCards = newCards.filter (card => card.faceUp === false || card.matched === true)
+
+            //flip the flipped cards face down, add them to newCards, sort
             matchCheck[0].faceUp=false;
             matchCheck[1].faceUp=false;
             newCards.push(...matchCheck);
             newCards.sort((a,b) => a.id-b.id);
+
+            //update state
             this.setState({
               cards:newCards,
               flipped:false,
               loading:false
             })
           }, 2000)        
-        }
-        // this.setState({cards: newCards})
+        }        
     }    
   }
-
-
-  
-
 
   render(){
     return(
