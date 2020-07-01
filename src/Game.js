@@ -11,7 +11,7 @@ const Game = (props) => {
     let cards=[]
     for(let i=0; i<props.cards.length;i+=4){
         const row=props.cards.slice(i,i+4)
-        cards.push(<Row key={i} cards={row} handleClickCard={props.handleClickCard}/>)
+        cards.push(<Row loading={props.loading} key={i} cards={row} handleClickCard={props.handleClickCard}/>)
     }
 
     return (

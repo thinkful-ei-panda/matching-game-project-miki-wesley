@@ -25,7 +25,8 @@ import Game from './Game';
 class App extends React.Component{
   state= {
     cards: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
-    flipped: false
+    flipped: false,
+    loading:false
   }
 
   //Handler for starting game after choosing settings
@@ -116,7 +117,10 @@ class App extends React.Component{
       })
 
       //update state with the card's flipped status, and that a card has been flipped
-      this.setState({cards: newCards, flipped: true})
+      this.setState({
+        cards: newCards,
+        flipped: true,
+      })
 
     //if a card has already been flipped, flip the selected card and check for a match      
     } else {
@@ -139,16 +143,41 @@ class App extends React.Component{
         newCards.sort((a, b) => {
           return a.id - b.id
         })
-        // const matchCheck = newCards.filter(card => card.faceUp  === true)
-        // if (matchCheck[0].url === matchCheck[1].url) {
-        // }
 
+        const matchCheck = newCards.filter(card => card.faceUp  === true && card.matched === false)        
+        if (matchCheck[0].url === matchCheck[1].url) {   
+          console.log('match')   
+          newCards = newCards.filter (card => card.faceUp ===false || card.matched===true)    
+          matchCheck[0].matched=true;
+          matchCheck[1].matched=true;
+          newCards.push(...matchCheck);
+          newCards.sort((a,b) => a.id-b.id);
 
-        this.setState({cards: newCards})
+            this.setState({
+              cards:newCards,
+              flipped:false,
+              loading:false
+            })
 
-    }
-
-    
+          
+        } else {
+          console.log('no match')          
+          this.setState({loading:true})
+          setTimeout(()=>{
+            newCards = newCards.filter (card => card.faceUp === false || card.matched === true)
+            matchCheck[0].faceUp=false;
+            matchCheck[1].faceUp=false;
+            newCards.push(...matchCheck);
+            newCards.sort((a,b) => a.id-b.id);
+            this.setState({
+              cards:newCards,
+              flipped:false,
+              loading:false
+            })
+          }, 2000)        
+        }
+        // this.setState({cards: newCards})
+    }    
   }
 
 
@@ -164,7 +193,7 @@ class App extends React.Component{
           <StartPage handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>
 
           {/* if game page */}
-          <Game cards={this.state.cards} handleClickCard={this.handleClickCard}/>
+          <Game loading={this.state.loading} cards={this.state.cards} handleClickCard={this.handleClickCard}/>
 
         </main>        
       </div>
