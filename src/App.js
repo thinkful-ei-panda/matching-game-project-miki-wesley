@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import StartPage from './StartPage';
 import Game from './Game';
+import Victory from './Victory';
 
 //Starting page:
 //Title, instructions, Form with select 16,20,24 cards, themes: dogs, playing cards, cats, classmates faces, Start game button
@@ -24,9 +25,11 @@ import Game from './Game';
 
 class App extends React.Component{
   state= {
-    cards: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+    cards: [],
     flipped: false,
-    loading:false
+    loading:false,
+    matched: 0,
+    timer: 0
   }
 
   //Handler for starting game after choosing settings
@@ -143,57 +146,81 @@ class App extends React.Component{
           return a.id - b.id
         })
 
+        //update state
+        this.setState({cards: newCards})
+
+        //set an array with the 2 cards to match and check if they match with if else
         const matchCheck = newCards.filter(card => card.faceUp  === true && card.matched === false)        
         if (matchCheck[0].url === matchCheck[1].url) {   
-          console.log('match')   
-          newCards = newCards.filter (card => card.faceUp ===false || card.matched===true)    
+
+          //if they match, add the non matching cards to the newCards
+          newCards = newCards.filter (card => card.faceUp ===false || card.matched===true)  
+          
+          //set the matched values of the matched cards to true, add them to the newCards, sort
           matchCheck[0].matched=true;
           matchCheck[1].matched=true;
           newCards.push(...matchCheck);
           newCards.sort((a,b) => a.id-b.id);
 
-            this.setState({
-              cards:newCards,
-              flipped:false,
-              loading:false
-            })
-
-          
+          //update state
+          this.setState({
+            cards:newCards,
+            flipped:false,
+            matched: this.state.matched + 2
+          })          
         } else {
+
+
+          //if the flipped cards don't match set loading to true
           this.setState({loading:true})
+
+          //wait 2 seconds
           setTimeout(()=>{
+
+            //add all the non flipped and previously matched cards to newCards
             newCards = newCards.filter (card => card.faceUp === false || card.matched === true)
+
+            //flip the flipped cards face down, add them to newCards, sort
             matchCheck[0].faceUp=false;
             matchCheck[1].faceUp=false;
             newCards.push(...matchCheck);
             newCards.sort((a,b) => a.id-b.id);
+
+            //update state
             this.setState({
               cards:newCards,
               flipped:false,
               loading:false
             })
           }, 2000)        
-        }
+        }        
+    } 
 
-        this.setState({cards: newCards})
-    }    
   }
 
-
-  
-
+  displayTime = () => {
+    this.setState({timer: this.state.timer + 1})
+  }
 
   render(){
+
+    let page = '';
+    if (this.state.cards.length === 0) {
+      page = 'start';
+    }
+
+    if(this.state.cards.length === this.state.matched && this.state.cards.length !==0) {
+      page = 'victory';
+    }
+
+
     return(
       <div className='App'>
         <Header />
         <main>
-          {/* if startPage */}
-          <StartPage handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>
-
-          {/* if game page */}
-          <Game loading={this.state.loading} cards={this.state.cards} handleClickCard={this.handleClickCard}/>
-
+          {page === 'start' && <StartPage handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>}
+          {page !== 'start' && page !== 'victory' && <Game timer={this.state.timer} displayTime={this.displayTime} loading={this.state.loading} cards={this.state.cards} handleClickCard={this.handleClickCard}/>}
+          {page === 'victory' && <Victory timer={this.state.timer} />} 
         </main>        
       </div>
     )
