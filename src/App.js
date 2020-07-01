@@ -124,7 +124,6 @@ class App extends React.Component{
 
     //if a card has already been flipped, flip the selected card and check for a match      
     } else {
-        console.log(e.target)
         let newCards = this.state.cards;
         //find and remove the selected card from the list         
         const targetCard = newCards.find(card => card.id === Number(e.target.id))
@@ -161,7 +160,6 @@ class App extends React.Component{
 
           
         } else {
-          console.log('no match')          
           this.setState({loading:true})
           setTimeout(()=>{
             newCards = newCards.filter (card => card.faceUp === false || card.matched === true)
@@ -176,7 +174,8 @@ class App extends React.Component{
             })
           }, 2000)        
         }
-        // this.setState({cards: newCards})
+
+        this.setState({cards: newCards})
     }    
   }
 
