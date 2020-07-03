@@ -1,4 +1,4 @@
-Matching Game by Miki Francisco and Wesley Rou
+Matching Game by Miki Francisco and Wesley Rou and Joshua Struve
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
