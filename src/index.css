@@ -1,11 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&family=Special+Elite&display=swap');
+
 *{
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: 'Merriweather',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -13,9 +14,22 @@ body {
   color:#F9F1DA;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+main{
+  background-image: url('./img/cherry-tabletop.jpg');
+}
+
+h1{
+  font-size: 2.5rem;
+  margin-bottom: -10px;
+}
+
+h1, h2 {
+  text-align: center;
+  font-family: "Special Elite", monospace;
+}
+
+.instructions{
+  text-align: center;
 }
 
 .row-container{
@@ -30,7 +44,35 @@ code {
   margin: 10px 10px;
   background-color: #F9F1DA;
   border-radius: 20px;
-  box-shadow: 8px 3px 3px rgba(56, 56, 56, 0.603);
+  /* box-shadow: 8px 3px 3px rgba(56, 56, 56, 0.603); */
+}
+
+.start-button-container{
+  margin: 40px 0px;
+  text-align: center;
+}
+
+.start-page-container{
+  /* Center the content */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  /* Take full size */
+  height: 100vh;
+  width: 100%;
+}
+
+.row-container{
+  justify-content: center;
+}
+
+.timer-container{
+  text-align: center;
+  color:#F9F1DA;
+  padding-top: 20px;
+
 }
 
 .face-down{
@@ -55,36 +97,6 @@ code {
 .card-image-matched{
   /* border: 5px solid green; */
   filter:saturate(80%);
-  
-}
-
-h1{
-  font-size:2rem;
-}
-
-.start-button-container{
-  margin: 40px 0px;
-  text-align: center;
-}
-
-.start-page-container{
-  /* Center the content */
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  /* Take full size */
-  height: 100vh;
-  width: 100%;
-}
-
-.instructions{
-  text-align: center;
-}
-
-header h1, header h2{
-  text-align: center;
 }
 
 .settings-form{
@@ -99,16 +111,23 @@ header h1, header h2{
   width: 100%;
 }
 
-main{
-  background-image: url('./img/cherry-tabletop.jpg');
+button, select {
+  padding: 10px 20px;
+  background-color: #F9F1DA;
+  border: 0px;
+  border-radius: 5px;
+  font-family: 'Merriweather', sans-serif;
 }
 
-.row-container{
-  justify-content: center;
+select {
+  padding: 9px 20px;
+  margin-right: 10px;
 }
 
-.timer-container{
-  text-align: center;
-  color:#F9F1DA;
+fieldset {
+  border: 0;
+}
 
+.restart-button {
+  margin-top: 30px;
 }

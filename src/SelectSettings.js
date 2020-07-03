@@ -6,9 +6,9 @@ const SelectSettings = (props) => {
             <legend><h2>Choose Your Settings</h2></legend>
             <fieldset>
                 <select id='numberCards' className='number-of-cards'>
-                    <option value='16'>16</option>
-                    <option value='20'>20</option>
-                    <option value='24'>24</option>
+                    <option value='16'>16 cards</option>
+                    <option value='20'>20 cards</option>
+                    <option value='24'>24 cards</option>
                 </select>
                 <select id='themeSelect' className='theme-select'>
                     <option value='Dogs'>Dogs</option>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from './Header';
 import StartPage from './StartPage';
 import Game from './Game';
 import Victory from './Victory';
@@ -84,7 +83,6 @@ class App extends React.Component{
         fetch(URL)
         .then(response => response.json())
         .then(data => {
-          console.log(data)
           cards = ([...data, ...data]).map(item => {
             return {
               id: Math.ceil(Math.random() * 1000),
@@ -116,7 +114,6 @@ class App extends React.Component{
       const targetCard = newCards.find(card => card.id === Number(e.target.id))
 
       newCards = newCards.filter(card => {
-        console.log(e.target)
         return card.id !== targetCard.id})
 
       //add that card back to the list with updated faceUp value and sort to the original order
@@ -174,13 +171,25 @@ class App extends React.Component{
           newCards.push(...matchCheck);
           newCards.sort((a,b) => a.id-b.id);
 
+          if(this.state.cards.length - 2 === this.state.matched && this.state.cards.length !==0) {
+
           //update state
-          this.setState({
-            cards:newCards,
-            flipped:false,
-            matched: this.state.matched + 2
-          })          
-        } else {
+            this.setState({
+              cards:newCards,
+              flipped:false,
+              matched: this.state.matched + 2,
+              page: 'victory'
+            })
+
+          } else {
+
+            this.setState({
+              cards:newCards,
+              flipped:false,
+              matched: this.state.matched + 2
+             })
+
+        }} else {
 
 
           //if the flipped cards don't match set loading to true
@@ -214,12 +223,15 @@ class App extends React.Component{
     this.setState({timer: this.state.timer + 1})
   }
 
+  handleRestartButton = () => {
+    this.setState({
+      matched: 0,
+      page: 'title',
+      timer: 0
+    })
+  }
+
   render(){
-
-    if(this.state.cards.length === this.state.matched && this.state.cards.length !==0) {
-      this.setState({page:'victory'})
-    }
-
 
     return(
       <div className='App'>
@@ -228,7 +240,7 @@ class App extends React.Component{
           {this.state.page === 'title' && <StartPage handleStartGameClick={this.handleStartGameClick}/>}
           {this.state.page === 'settings' && <SelectSettings  handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>}
           {this.state.page ==='game' && <Game timer={this.state.timer} displayTime={this.displayTime} loading={this.state.loading} cards={this.state.cards} handleClickCard={this.handleClickCard}/>}
-          {this.state.page === 'victory' && <Victory timer={this.state.timer} />} 
+          {this.state.page === 'victory' && <Victory handleRestartButton={this.handleRestartButton} timer={this.state.timer} />} 
         </main>        
       </div>
     )

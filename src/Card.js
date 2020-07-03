@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Card = (props) => {
-    console.log(props.loading)
     return (
     <>
         {/* if loading display without handler */}
