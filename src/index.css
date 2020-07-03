@@ -9,6 +9,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size:1rem;
+  color:#F9F1DA;
 }
 
 code {
@@ -18,23 +20,95 @@ code {
 
 .row-container{
   display:flex;
-  flex-direction: row;
+  flex-flow: row wrap;
+  /* flex-direction: row wrap; */
 }
 
 .card-container{
-  width:260px;
-  height:400px;
-  border:solid black 2px;
-  border-radius: 20px;  
+  width:336px;
+  height:454px;
+  margin: 10px 10px;
+  background-color: #F9F1DA;
+  border-radius: 20px;
+  box-shadow: 8px 3px 3px rgba(56, 56, 56, 0.603);
+}
+
+.face-down{
+  width:336px;
+  height:454px;
+  /* border:solid black 2px; */
+  border-radius: 20px;
+  background-image: url('./img/card-background.png');
+  background-position: center center;
+  background-size: contain;  
+  background-repeat: no-repeat;
 }
 
 .card-image, .card-image-matched{
-  width:260px;
-  height:400px;
-  object-fit: contain;
+  width:336px;
+  height:100%;
+  object-fit: cover;
   border-radius: 20px;  
+  filter:saturate(0%);
 }
 
 .card-image-matched{
-  border: 5px solid green;
+  /* border: 5px solid green; */
+  filter:saturate(80%);
+  
+}
+
+h1{
+  font-size:2rem;
+}
+
+.start-button-container{
+  margin: 40px 0px;
+  text-align: center;
+}
+
+.start-page-container{
+  /* Center the content */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  /* Take full size */
+  height: 100vh;
+  width: 100%;
+}
+
+.instructions{
+  text-align: center;
+}
+
+header h1, header h2{
+  text-align: center;
+}
+
+.settings-form{
+  /* Center the content */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  /* Take full size */
+  height: 100vh;
+  width: 100%;
+}
+
+main{
+  background-image: url('./img/cherry-tabletop.jpg');
+}
+
+.row-container{
+  justify-content: center;
+}
+
+.timer-container{
+  text-align: center;
+  color:#F9F1DA;
+
 }

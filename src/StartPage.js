@@ -2,25 +2,19 @@ import React from 'react'
 
 const StartPage = (props) => {
     return (
-        <>
-        <div>Instructions:</div>
-        <form onSubmit={e=>props.handleGameSettingsSubmit(e)}>
-            <legend hidden>Game Settings Form</legend>
-            <fieldset>
-                <select id='numberCards' className='number-of-cards'>
-                    <option value='16'>16</option>
-                    <option value='20'>20</option>
-                    <option value='24'>24</option>
-                </select>
-                <select id='themeSelect' className='theme-select'>
-                    <option value='Dogs'>Dogs</option>
-                    <option value='Cats'>Cats</option>
-                    {/* <option value='Cards'>Cards</option> */}
-                </select>
-                <button type='submit'>Start Game</button>
-            </fieldset>
-        </form>
-        </>
+        <div className='start-page-container'>
+            <header>
+                <h1>Cats vs Dogs:</h1>
+                <h2>A Matching Game</h2>
+            </header>
+            <div className='instructions'>
+                Choose how many cards you want and if you like dogs or cats.
+                Match the cards as fast as you can to see how you score.            
+            </div>
+            <div className='start-button-container'>
+                <button onClick={e=>props.handleStartGameClick(e)}type='button'>Start Game</button>        
+            </div>
+        </div>
     )
 }
 

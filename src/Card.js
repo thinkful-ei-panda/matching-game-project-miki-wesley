@@ -6,6 +6,8 @@ const Card = (props) => {
     <>
         {/* if loading display without handler */}
         {props.loading===true && <div className='card-container' id={props.card.id}>
+            
+            {!props.card.faceUp && <div className='face-down'/>}
 
             {/* display the card image if card is face up and unmatched*/}
             {props.card.faceUp && props.card.matched === false && <img id={props.card.id} className='card-image' src={props.card.url} alt='' />}
@@ -14,7 +16,9 @@ const Card = (props) => {
         </div>}
     
         {/* if not loading display with handler */}
-        {props.loading===false && <div className='card-container' id={props.card.id} onClick={(e) => props.handleClickCard(e)}>
+        {props.loading===false && <div className='card-container' >
+
+            {!props.card.faceUp && <div className='face-down' id={props.card.id} onClick={(e) => props.handleClickCard(e)}/>}
 
             {/* display the card image if card is face up and unmatched*/}
             {props.card.faceUp && props.card.matched === false && <img id={props.card.id} className='card-image' src={props.card.url} alt='' />}

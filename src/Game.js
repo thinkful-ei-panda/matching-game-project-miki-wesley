@@ -25,7 +25,9 @@ import Row from './Row'
 
         return (
             <>
-                <div>{this.props.timer}</div>
+                <div className='timer-container'>
+                    <h2>{this.props.timer}</h2>
+                </div>
                 <div>{cards}</div>
             </>
         )

@@ -3,6 +3,7 @@ import Header from './Header';
 import StartPage from './StartPage';
 import Game from './Game';
 import Victory from './Victory';
+import SelectSettings from './SelectSettings';
 
 //Starting page:
 //Title, instructions, Form with select 16,20,24 cards, themes: dogs, playing cards, cats, classmates faces, Start game button
@@ -29,10 +30,19 @@ class App extends React.Component{
     flipped: false,
     loading:false,
     matched: 0,
-    timer: 0
+    timer: 0,
+    page: 'title'
   }
 
-  //Handler for starting game after choosing settings
+
+
+  //Handler for starting game
+  handleStartGameClick= (e) => {
+    this.setState({page:'settings'})
+  }
+
+
+  // after choosing settings
   handleGameSettingsSubmit= (e) =>{
     e.preventDefault();
     const numberCards = e.target.numberCards.value;
@@ -95,6 +105,7 @@ class App extends React.Component{
       default:
         // URL = ''
     }
+    this.setState({page:'game'})
   }
 
   handleClickCard = (e) => {
@@ -105,6 +116,7 @@ class App extends React.Component{
       const targetCard = newCards.find(card => card.id === Number(e.target.id))
 
       newCards = newCards.filter(card => {
+        console.log(e.target)
         return card.id !== targetCard.id})
 
       //add that card back to the list with updated faceUp value and sort to the original order
@@ -204,23 +216,19 @@ class App extends React.Component{
 
   render(){
 
-    let page = '';
-    if (this.state.cards.length === 0) {
-      page = 'start';
-    }
-
     if(this.state.cards.length === this.state.matched && this.state.cards.length !==0) {
-      page = 'victory';
+      this.setState({page:'victory'})
     }
 
 
     return(
       <div className='App'>
-        <Header />
-        <main>
-          {page === 'start' && <StartPage handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>}
-          {page !== 'start' && page !== 'victory' && <Game timer={this.state.timer} displayTime={this.displayTime} loading={this.state.loading} cards={this.state.cards} handleClickCard={this.handleClickCard}/>}
-          {page === 'victory' && <Victory timer={this.state.timer} />} 
+        {/* <Header /> */}
+        <main className='wrapper'>
+          {this.state.page === 'title' && <StartPage handleStartGameClick={this.handleStartGameClick}/>}
+          {this.state.page === 'settings' && <SelectSettings  handleGameSettingsSubmit={this.handleGameSettingsSubmit}/>}
+          {this.state.page ==='game' && <Game timer={this.state.timer} displayTime={this.displayTime} loading={this.state.loading} cards={this.state.cards} handleClickCard={this.handleClickCard}/>}
+          {this.state.page === 'victory' && <Victory timer={this.state.timer} />} 
         </main>        
       </div>
     )

@@ -3,7 +3,7 @@ import React from 'react'
 const Header = () => {
     return (
         <header>
-            <h1>Matching Game</h1>
+            <h1 className='start-page-container'>Matching Game</h1>
         </header>
     )
 }
